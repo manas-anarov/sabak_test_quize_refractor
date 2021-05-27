@@ -2,9 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:sabak_test/data/tizme.dart';
-// import 'package:quizzler/data/quiz_brain.dart';
-// import 'package:quizzler/models/question.dart';
-// import 'package:rflutter_alert/rflutter_alert.dart';
 
 class SurooPage extends StatefulWidget {
   @override
@@ -13,61 +10,23 @@ class SurooPage extends StatefulWidget {
 
 class _SurooPageState extends State<SurooPage> {
   List<Icon> scoreKeeper = [];
+  String reset_text = 'reset';
 
   @override
   void initState() {
     super.initState();
-    // ifElse.funkciyaAty('Bul men jibergen string');
-    // String data = ifElse.sanNolbu(12);
-
-    // print('kelgen data: $data');
   }
 
-  void checkAnswer(bool basilgan_joop) {
+  void checkAnswer(bool basilganJoop) {
     setState(() {
       if (tizmeBrain.isFinished() == true) {
-        bool correctAnswer = tizmeBrain.jooptuAlipKel();
+        reset_text = 'RESETTI BAS';
 
-        if (basilgan_joop == correctAnswer) {
-          scoreKeeper.add(Icon(
-            Icons.check,
-            color: Colors.green,
-          ));
-        } else {
-          scoreKeeper.add(Icon(
-            Icons.close,
-            color: Colors.red,
-          ));
-        }
+        setIconMasele(basilganJoop);
+
         tizmeBrain.nextQuestion();
-
-        Future.delayed(Duration(seconds: 1)).then((_) {
-          print("secund");
-          tizmeBrain.reset();
-          scoreKeeper = [];
-        });
-
-        // Timer(Duration(seconds: 2), () {
-        //   print("secund");
-        //   tizmeBrain.reset();
-        //   scoreKeeper = [];
-        // });
-
       } else {
-        bool correctAnswer = tizmeBrain.jooptuAlipKel();
-
-        if (basilgan_joop == correctAnswer) {
-          scoreKeeper.add(Icon(
-            Icons.check,
-            color: Colors.green,
-          ));
-        } else {
-          scoreKeeper.add(Icon(
-            Icons.close,
-            color: Colors.red,
-          ));
-        }
-        tizmeBrain.nextQuestion();
+        setIconMasele(basilganJoop);
       }
     });
   }
@@ -108,6 +67,28 @@ class _SurooPageState extends State<SurooPage> {
                   color: Colors.white,
                 ),
               ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(15.0),
+            child: FlatButton(
+              textColor: Colors.white,
+              color: Colors.blue,
+              child: Text(
+                '$reset_text',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
+                ),
+              ),
+              onPressed: () {
+                setState(() {
+                  tizmeBrain.reset();
+                  scoreKeeper = [];
+                });
+              },
             ),
           ),
         ),
